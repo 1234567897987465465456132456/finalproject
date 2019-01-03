@@ -215,6 +215,345 @@ int main()
 	printf("\n\t\t");
 	system("pause");
 }
+//移動
+int move(int mode)
+{
+	switch (getch())	//不會顯示在螢幕上的讀取方式
+	{
+	case 'w':
+	{
+		q = 1;
+		i += 1;
+		memcpy(b, map, sizeof(map));
+		up();
+		break;
+	}
+	case 's':
+	{
+		q = 1;
+		i += 1;
+		memcpy(b, map, sizeof(map));
+		down();
+		break;
+	}
+	case 'a':
+	{
+		q = 1;
+		i += 1;
+		memcpy(b, map, sizeof(map));
+		left();
+		break;
+	}
+	case 'd':
+	{
+		q = 1;
+		i += 1;
+		memcpy(b, map, sizeof(map));
+		right();
+		break;
+	}
+	case 'r':
+	{
+		switch (mode)
+		{
+		case 1:
+			memcpy(map, map_1, sizeof(map_1));
+			break;
+		case 2:
+			memcpy(map, map_2, sizeof(map_2));
+			break;
+		case 3:
+			memcpy(map, map_3, sizeof(map_3));
+			break;
+		case 4:
+			memcpy(map, map_4, sizeof(map_4));
+			break;
+		case 5:
+			memcpy(map, map_5, sizeof(map_5));
+			break;
+		case 6:
+			memcpy(map, map_6, sizeof(map_6));
+			break;
+		case 7:
+			memcpy(map, map_7, sizeof(map_7));
+			break;
+		case 8:
+			memcpy(map, map_8, sizeof(map_8));
+			break;
+		case 9:
+			memcpy(map, map_9, sizeof(map_9));
+			break;
+		case 10:
+			memcpy(map, map_10, sizeof(map_10));
+			break;
+		}
+		for (i = 0; i < 15; i++)
+		{
+			for (j = 0; j < 15; j++)
+			{
+				b[i][j] = 0;
+			}
+		}
+		i = 0;
+		q = 0;
+		break;
+	}
+	case 'z':
+	{
+		if (q == 1 && i > 0)
+		{
+			i -= 1;
+			memcpy(map, b, sizeof(b));
+			map[0][14] = 1;
+		}
+		q = 0;
+		break;
+	}
+	case 'e':
+	{
+		exit(0);
+	}
+	case 'c':
+	{
+		for (i = 0; i < 15; i++)
+		{
+			for (j = 0; j < 15; j++)
+			{
+				b[i][j] = 0;
+			}
+		}
+		q = 0;
+		i = 0;
+		j = 1;
+		break;
+	}
+	default:
+		break;
+	return map[15][15];
+	}
+}
+int find(int i,int j)
+{
+	for (x = 0; x < i; x++)
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 3)
+				return 0;
+		}
+	return 0;
+}
+// 按w的輸出結果
+int up()
+{
+	if (map[x][y] == 3)		//找到自己的位置
+	{
+		if (map[x - 1][y] == 0)		//下一格子空的
+		{
+			map[x - 1][y] = 3;
+			map[x][y] = 0;
+		}
+		if (map[x - 1][y] == 2 && map[x - 2][y] == 4)	//下一格子箱子,下下個星星方
+		{
+			map[x][y] = 0;
+			map[x - 1][y] = 3;
+			map[x - 2][y] = 5;
+		}
+		if (map[x - 1][y] == 2 && (map[x - 2][y] == 1||map[x-2][y]==2))
+			i -= 1;
+		if (map[x - 1][y] == 2 && map[x - 2][y] == 0)	//下一個格子箱子，下下個格子空的
+		{
+			map[x][y] = 0;
+			map[x - 1][y] = 3;
+			map[x - 2][y] = 2;
+		}
+		if (map[x-1][y]==5 && map[x-2][y]==4)		//下個格子是不是星星並且下下個格子也是星星
+		{
+			map[x][y] = 3;
+			map[x - 1][y] = 4;
+			map[x - 2][y] = 5;
+			i = i + 1;
+		}
+		if (map[x - 1][y] == 1|| map[x - 1][y] == 4|| map[x - 1][y] == 5)//下一格是牆壁的話不會增加移動步數
+		{
+			i -= 1;
+			q = 0; 
+		}
+	}
+	return 0;
+}
+//按s的輸出結果
+int down()
+{
+	if (map[x][y] == 3)
+	{
+		if (map[x + 1][y] == 0)
+		{
+			map[x + 1][y] = 3;
+			map[x][y] = 0;
+		}
+		if (map[x + 1][y] == 2 && map[x + 2][y] == 4)
+		{
+			map[x][y] = 0;
+			map[x + 1][y] = 3;
+			map[x + 2][y] = 5;
+		}
+		if (map[x + 1][y] == 2 &&( map[x + 2][y] == 1||map[x+2][y]==2))
+			i -= 1;
+		if (map[x + 1][y] == 2 && map[x + 2][y] == 0)
+		{
+			map[x + 1][y] = 3;
+			map[x][y] = 0;
+			map[x + 2][y] = 2;
+		}
+		if (map[x + 1][y] == 5 && map[x + 2][y] == 4)
+		{
+			map[x][y] = 3;
+			map[x + 1][y] = 4;
+			map[x + 2][y] = 5;
+			i = i + 1;
+		}
+		if (map[x + 1][y] == 1|| map[x + 1][y] == 4|| map[x + 1][y] == 5)
+		{
+			i -= 1;
+			q = 0;
+		}
+	}
+	return 0;
+}
+//按a的輸出結果
+int left()
+{
+	if (map[x][y] == 3)
+	{
+		if (map[x][y - 1] == 0)
+		{
+			map[x][y - 1] = 3;
+			map[x][y] = 0;
+		}
+		if (map[x][y - 1] == 2 && map[x][y - 2] == 4)
+		{
+			map[x][y] = 0;
+			map[x][y - 1] = 3;
+			map[x][y - 2] = 5;
+		}
+		if (map[x][y-1] == 2 && (map[x][y-2] == 1||map[x][y-2]))
+			i -= 1;
+		if (map[x][y - 2] == 0 && map[x][y - 1] == 2)
+		{
+			map[x][y] = 0;
+			map[x][y - 1] = 3;
+			map[x][y - 2] = 2;
+		}
+		if (map[x][y-1] == 5 && map[x][y-2] == 4)
+		{
+			map[x][y] = 3;
+			map[x][y-1] = 4;
+			map[x ][y-2] = 5;
+			i = i + 1;
+		}
+		if (map[x][y - 1] == 1|| map[x][y - 1] == 4|| map[x][y - 1] == 5)
+		{
+			i -= 1;
+			q = 0;
+		}
+	}
+	return 0;
+}
+//按d的輸出結果
+int right()
+{
+	if (map[x][y] == 3)
+	{
+		if (map[x][y + 1] == 0)
+		{
+			map[x][y + 1] = 3;
+			map[x][y] = 0;
+		}
+		if (map[x][y + 1] == 2 && map[x][y + 2] == 4)
+		{
+			map[x][y] = 0;
+			map[x][y + 1] = 3;
+			map[x][y + 2] = 5;
+		}
+		if (map[x][y+1] == 2 && (map[x][y+2] == 1||map[x][y+2]==2))
+			i -= 1;
+		if (map[x][y + 1] == 2 && map[x][y + 2] == 0)
+		{
+			map[x][y] = 0;
+			map[x][y+1] = 3;
+			map[x][y+2] = 2;
+		}
+		if (map[x][y +1] == 5 && map[x][y +2] == 4)
+		{
+			map[x][y] = 3;
+			map[x][y+1] = 4;
+			map[x][y+2] = 5;
+			i = i + 1;
+		}
+		if (map[x][y + 1] == 1|| map[x][y + 1] == 4|| map[x][y + 1] == 5)
+		{
+			i -= 1;
+			q = 0;
+		}
+	}
+	return 0;
+}
+//讓二維陣列中不同的數字對應到不同的樣式
+int graphics(int i,int j)
+{
+	for (x = 0; x < i; x++)
+	{
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 1)
+				printf("■"); //牆壁
+			if (map[x][y] == 3)
+				printf("⊙"); //自己
+			if (map[x][y] == 2)
+				printf("□"); //箱子
+			if (map[x][y] == 4)
+				printf("☆"); //目的地
+			if (map[x][y] == 0)
+				printf("  "); //空白
+			if (map[x][y] == 5)
+				printf("★"); //箱子已到達目的地
+		}
+		if (x == i / 3)
+			printf("\t\tR->重新開始遊戲");
+		else if (x ==i/3+1)
+			printf("\t\tZ->回到上一步(只能重複一次)");
+		else if(x==i/3+2)
+			printf("\t\tE->關閉遊戲");
+		else if(x==i/3+3)
+			printf("\t\tC->地圖選單");
+		printf("\n");
+	}
+	return 0;
+}
+//箱子要到的位置的個數
+int count1(int i,int j)
+{
+	int n = 0;
+	for (x = 0; x < i; x++)
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 4)
+				n++;
+		}
+	return n;
+}
+//箱子到了位置的個數
+int count2(int i,int j)
+{
+	int m = 0;
+	for (x = 0; x < i; x++)
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 5)
+				m++;
+		}
+	return m;
+}
 //制作主界面
 int interface()
 {
