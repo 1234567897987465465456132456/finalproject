@@ -1,0 +1,56 @@
+//讓二維陣列中不同的數字對應到不同的樣式
+int graphics(int i,int j)
+{
+	for (x = 0; x < i; x++)
+	{
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 1)
+				printf("■"); //牆壁
+			if (map[x][y] == 3)
+				printf("⊙"); //自己
+			if (map[x][y] == 2)
+				printf("□"); //箱子
+			if (map[x][y] == 4)
+				printf("☆"); //目的地
+			if (map[x][y] == 0)
+				printf("  "); //空白
+			if (map[x][y] == 5)
+				printf("★"); //箱子已到達目的地
+		}
+		if (x == i / 3)
+			printf("\t\tR->重新開始遊戲");
+		else if (x ==i/3+1)
+			printf("\t\tZ->回到上一步(只能重複一次)");
+		else if(x==i/3+2)
+			printf("\t\tE->關閉遊戲");
+		else if(x==i/3+3)
+			printf("\t\tC->地圖選單");
+		printf("\n");
+	}
+	return 0;
+}
+//箱子要到的位置的個數
+int count1(int i,int j)
+{
+	int n = 0;
+	for (x = 0; x < i; x++)
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 4)
+				n++;
+		}
+	return n;
+}
+//箱子到了位置的個數
+int count2(int i,int j)
+{
+	int m = 0;
+	for (x = 0; x < i; x++)
+		for (y = 0; y < j; y++)
+		{
+			if (map[x][y] == 5)
+				m++;
+		}
+	return m;
+}
